@@ -4,7 +4,7 @@
 
 NetVis is an end-to-end security engineering platform that combines active recon, passive telemetry, and correlation logic to decide what to inspect next, then turns raw signals into an analyst-ready story.
 
-![NetVis interface preview](docs/assets/netvis-graph-showcase.png)
+![NetVis interface preview](docs/assets/netvis-graph-showcase-v2.png)
 
 ## Why It Is Different
 

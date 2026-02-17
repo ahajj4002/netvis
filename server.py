@@ -5530,7 +5530,11 @@ def start_scan_job():
 @app.route('/api/scan/jobs', methods=['GET'])
 def list_scan_jobs():
     """List recent scan jobs."""
-    limit = int(request.args.get('limit', 20))
+    try:
+        limit = int(request.args.get('limit', 20))
+    except Exception:
+        limit = 20
+    limit = max(1, min(200, limit))
     return jsonify({'jobs': datastore.list_scan_jobs(limit=limit)})
 
 
@@ -8124,5 +8128,12 @@ if __name__ == '__main__':
     print(f"Network: {scanner.network_cidr}")
     print(f"Scapy available: {SCAPY_AVAILABLE}")
     print(f"Nmap available: {NMAP_AVAILABLE}")
-    
-    socketio.run(app, host=args.host, port=args.port, debug=True, allow_unsafe_werkzeug=True)
+
+    debug_enabled = str(os.environ.get("NETVIS_DEBUG", "")).strip().lower() in ("1", "true", "yes", "on")
+    socketio.run(
+        app,
+        host=args.host,
+        port=args.port,
+        debug=debug_enabled,
+        allow_unsafe_werkzeug=debug_enabled,
+    )

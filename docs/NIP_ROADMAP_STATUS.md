@@ -390,7 +390,7 @@ What exists:
 - Graph diff API: `GET /api/nip/graph/diff/full?t1=<ISO>&t2=<ISO>`
 
 Evidence:
-- UI: Graph view in `App.jsx`
+- UI: Graph view in `src/App.jsx`
 - APIs: `/api/nip/graph`, `/api/nip/graph/full`, `/api/nip/graph/diff/full`
 
 ### 6.2 - Timeline View (`DONE`)
@@ -402,7 +402,7 @@ What exists:
 - Shows filtered count vs total count.
 
 Evidence:
-- UI: `App.jsx` (`TimelinePanel` with filterCategory + filterEntity state)
+- UI: `src/App.jsx` (`TimelinePanel` with filterCategory + filterEntity state)
 - Data: `GET /api/intel/story` -> `timeline`
 
 ### 6.3 - Natural Language Query (`DONE`)
@@ -446,7 +446,7 @@ What exists:
   - Subnet C: MQTT broker, Telnet simulator, netcat service
 
 Evidence:
-- Demo: `server.py` (`--demo`, `generate_demo_data`)
+- Demo: `app.py` (`--demo`, `generate_demo_data`)
 - Lab: `docker-compose.lab.yml`
 
 ### 7.2 - Evasion Validation Matrix (`DECLINED`)

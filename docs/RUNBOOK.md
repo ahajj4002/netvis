@@ -25,14 +25,14 @@ Run the backend on port `5001` (root required for most packet techniques):
 
 ```bash
 cd <repo-root>
-sudo venv/bin/python server.py --host 127.0.0.1 --port 5001
+sudo venv/bin/python app.py --host 127.0.0.1 --port 5001
 ```
 
 Optional demo mode (no root required; synthetic data):
 
 ```bash
 cd <repo-root>
-venv/bin/python server.py --demo --host 127.0.0.1 --port 5001
+venv/bin/python app.py --demo --host 127.0.0.1 --port 5001
 ```
 
 ### 2) Frontend (React/Vite)

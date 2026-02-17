@@ -2,36 +2,39 @@
 
 ## The Network Brain for Recon and Visibility
 
-NetVis is built to feel less like a scanner and more like an intelligence brain for your network.
-It combines active recon, passive telemetry, and correlation logic to decide what to inspect next, then turns results into a story you can act on.
+NetVis is an end-to-end security engineering platform that combines active recon, passive telemetry, and correlation logic to decide what to inspect next, then turns raw signals into an analyst-ready story.
+
+## Recruiter Snapshot
+
+- Full-stack system design: Flask + Socket.IO backend with a React/Vite frontend.
+- Real orchestration: asynchronous scan jobs and coursework jobs with persisted state.
+- Data engineering: SQLite intelligence store for assets, services, flows, DNS, alerts, observations, and jobs.
+- Operational UX: graph, dashboard, timeline, workbench, and module runner in one product.
+- Engineering quality signals: backend tests, frontend smoke tests, and GitHub Actions CI.
 
 ## Why It Is Different
 
 - Adaptive scan flow: profile-aware jobs (`quick`, `standard`, `deep`) that pivot from discovery to deeper techniques.
 - Multi-source intelligence: ARP, TCP/UDP probing, banners, DNS, capture flows, and detection signals in one view.
-- Story-first output: a correlated intel timeline and narrative (`/api/intel/story`) instead of raw scan spam.
-- Built for operators: graph, dashboard, workbench, and coursework runner from one UI.
+- Story-first output: correlated narrative and timeline (`/api/intel/story`, `/api/intel/timeline`) instead of raw scan noise.
+- Built for operators: interactive graph + investigative panels + reproducible module tooling.
 
-## How the "Brain" Works Today
+## Showcase Outcomes
 
-1. Discover assets and topology.
-2. Rank hosts by exposure and signal quality.
-3. Expand probing automatically using the selected profile.
-4. Persist evidence in SQLite (`data/netvis.db`) and publish a correlated story.
-
-This gives you guided autonomous behavior today, with operator control and guardrails.
+- Multi-chain pipeline generates fused artifacts: `report/multichain_story.md` and `report/multichain_casefile.json`.
+- Detection-side workflow produces matrix artifacts via Module 7 helpers.
+- Background jobs provide progress tracking, status, and result retention through API.
+- NIP substrate supports technique registry, event bus, baselines, and quality scoring.
 
 ## Agentic AI Framework (Coming Soon)
 
 NetVis is evolving toward a full agentic workflow for network intelligence.
 
 Planned direction:
-- Goal-driven planner that picks techniques based on confidence and risk.
+- Goal-driven planner that selects techniques by confidence, cost, and risk.
 - Tool-using agents for discovery, fingerprinting, detection, and triage.
 - Memory-aware reasoning over prior observations, not single-run snapshots.
-- Human approval gates for sensitive actions.
-
-If you want early collaboration on this roadmap, open an issue and describe your use case.
+- Human-approval gates for sensitive actions.
 
 ## Architecture
 
@@ -50,6 +53,19 @@ flowchart LR
     Story --> UI
 ```
 
+## Project Layout
+
+```text
+app.py                  # Canonical backend entrypoint (wires refactored modules)
+server.py               # API surface and core orchestration logic
+store.py                # SQLite persistence layer
+services/               # Job managers, scan service, metrics daemon
+src/                    # React frontend (components, panels, views)
+mod1..mod7/             # Rubric-aligned reconnaissance modules
+nip/                    # Registry, event bus, schema, brain/quality helpers
+docs/                   # Runbook and roadmap status docs
+```
+
 ## Quick Start
 
 ### Requirements
@@ -59,7 +75,7 @@ flowchart LR
 - Optional: `nmap`
 - Optional: root/sudo for packet capture and low-level scans
 
-### Backend
+### Backend Setup
 
 ```bash
 python -m venv venv
@@ -70,7 +86,7 @@ pip install -r requirements.txt
 cp .env.example .env
 ```
 
-### Frontend
+### Frontend Setup
 
 ```bash
 npm install
@@ -81,14 +97,37 @@ npm run dev
 
 ```bash
 # Backend demo mode (no root required)
-venv/bin/python server.py --demo
+venv/bin/python app.py --demo
 
 # Backend full mode
-sudo venv/bin/python server.py
+sudo venv/bin/python app.py
 ```
 
 - Frontend: `http://localhost:3000`
 - Backend: `http://localhost:5001`
+
+## Quality Checks
+
+```bash
+# Backend tests
+venv/bin/pip install -r requirements-dev.txt
+venv/bin/pytest -q
+
+# Frontend tests + production build
+npm ci
+npm test
+npm run build
+```
+
+GitHub Actions CI runs these checks on push and pull request via `.github/workflows/ci.yml`.
+
+## 5-Minute Demo Flow
+
+1. Start backend in demo mode: `venv/bin/python app.py --demo`
+2. Start frontend: `npm run dev`
+3. Open `http://localhost:3000`
+4. Show Graph + Dashboard + Workbench views
+5. Run a scan job and open the generated intel story/timeline
 
 ## API Highlights
 
@@ -118,11 +157,11 @@ sudo venv/bin/python server.py
 
 ## Contributing
 
-PRs are welcome. Good contribution areas:
-- Better autonomous decision logic in scan strategy
-- Improved confidence scoring and risk ranking
-- New protocol analyzers and technique adapters
-- Exporters for SIEM/SOAR pipelines
+PRs are welcome. High-impact contribution areas:
+- Improved autonomous scan strategy and confidence scoring
+- Additional protocol analyzers and technique adapters
+- Better attack-path correlation and report generation
+- SIEM/SOAR export integrations
 
 ## License
 

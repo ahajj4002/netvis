@@ -4,13 +4,7 @@
 
 NetVis is an end-to-end security engineering platform that combines active recon, passive telemetry, and correlation logic to decide what to inspect next, then turns raw signals into an analyst-ready story.
 
-## Recruiter Snapshot
-
-- Full-stack system design: Flask + Socket.IO backend with a React/Vite frontend.
-- Real orchestration: asynchronous scan jobs and coursework jobs with persisted state.
-- Data engineering: SQLite intelligence store for assets, services, flows, DNS, alerts, observations, and jobs.
-- Operational UX: graph, dashboard, timeline, workbench, and module runner in one product.
-- Engineering quality signals: backend tests, frontend smoke tests, and GitHub Actions CI.
+![NetVis interface preview](docs/assets/netvis-graph-showcase.png)
 
 ## Why It Is Different
 

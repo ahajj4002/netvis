@@ -511,7 +511,8 @@ def identify_service(port: int, banner: str) -> str:
     # Banner-based detection
     banner_lower = banner.lower()
     if 'ssh' in banner_lower:
-        return f"SSH ({banner.split('\\n')[0][:30]})"
+        first_line = banner.splitlines()[0] if banner else ""
+        return f"SSH ({first_line[:30]})"
     elif 'nginx' in banner_lower:
         return 'Nginx'
     elif 'apache' in banner_lower:

@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "notes": "Lightweight OS signature set for the NetVis toolkit. This is heuristic, not a full Nmap-quality database.",
+  "signatures": [
+    {
+      "name": "windows",
+      "ttl_min": 96,
+      "ttl_max": 128,
+      "df": true,
+      "required_options": ["MSS", "WScale"],
+      "option_orders_any": [
+        ["MSS", "NOP", "WScale", "NOP", "NOP", "SAckOK"],
+        ["MSS", "NOP", "WScale", "SAckOK"]
+      ],
+      "window_values_any": [8192, 64240, 65535],
+      "notes": "Typical Windows SYN-ACK patterns (may vary by build and tuning)."
+    },
+    {
+      "name": "linux",
+      "ttl_min": 32,
+      "ttl_max": 64,
+      "df": true,
+      "required_options": ["MSS"],
+      "option_orders_any": [
+        ["MSS", "SAckOK", "Timestamp", "NOP", "WScale"],
+        ["MSS", "SAckOK", "Timestamp", "WScale"]
+      ],
+      "window_values_any": [5840, 29200, 64240, 65535],
+      "notes": "Typical Linux SYN-ACK patterns (may vary by kernel and sysctl)."
+    },
+    {
+      "name": "macos_ios",
+      "ttl_min": 32,
+      "ttl_max": 64,
+      "df": true,
+      "required_options": ["MSS", "Timestamp"],
+      "option_orders_any": [
+        ["MSS", "SAckOK", "Timestamp", "NOP", "WScale"],
+        ["MSS", "Timestamp", "NOP", "WScale"]
+      ],
+      "window_values_any": [65535],
+      "notes": "Typical macOS/iOS patterns (heuristic)."
+    },
+    {
+      "name": "freebsd_openbsd",
+      "ttl_min": 32,
+      "ttl_max": 64,
+      "df": true,
+      "required_options": ["MSS"],
+      "option_orders_any": [
+        ["MSS", "NOP", "WScale", "NOP", "NOP", "SAckOK", "Timestamp"]
+      ],
+      "window_values_any": [65535],
+      "notes": "BSD-family patterns vary; treat as coarse family guess."
+    }
+  ]
+}
+

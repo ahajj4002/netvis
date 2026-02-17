@@ -1,0 +1,144 @@
+# NIP Phase 7.1 — Lab Environment
+# Docker Compose topology for validation testing.
+#
+#   [Internet Sim (attacker)]
+#               |
+#         [fw / Suricata]
+#               |
+#       +-------+-------+
+#       |       |       |
+#   [subnet_a] [subnet_b] [subnet_c]
+#    3 hosts    3 hosts    3 hosts
+#
+# Usage:
+#   docker compose -f docker-compose.lab.yml up -d
+#   # Then point NIP at 172.20.0.0/16
+#   docker compose -f docker-compose.lab.yml down
+
+version: "3.9"
+
+networks:
+  backbone:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/24
+  subnet_a:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.10.0/24
+  subnet_b:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.20.0/24
+  subnet_c:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.30.0/24
+
+services:
+  # ── Firewall / IDS (Suricata) ──
+  firewall:
+    image: jasonish/suricata:latest
+    container_name: nip-fw
+    cap_add: [NET_ADMIN, NET_RAW, SYS_NICE]
+    command: >
+      -i eth0
+    networks:
+      backbone:
+        ipv4_address: 172.20.0.2
+      subnet_a:
+        ipv4_address: 172.20.10.1
+      subnet_b:
+        ipv4_address: 172.20.20.1
+      subnet_c:
+        ipv4_address: 172.20.30.1
+    volumes:
+      - suricata_logs:/var/log/suricata
+
+  # ── Subnet A: mixed OS / services ──
+  host_a1:
+    image: alpine:3.19
+    container_name: nip-a1
+    command: sh -c "apk add --no-cache openssh-server && ssh-keygen -A && /usr/sbin/sshd && sleep infinity"
+    cap_add: [NET_RAW]
+    networks:
+      subnet_a:
+        ipv4_address: 172.20.10.10
+    depends_on: [firewall]
+
+  host_a2:
+    image: nginx:alpine
+    container_name: nip-a2
+    networks:
+      subnet_a:
+        ipv4_address: 172.20.10.20
+    depends_on: [firewall]
+
+  host_a3:
+    image: python:3.12-slim
+    container_name: nip-a3
+    command: python3 -m http.server 8080
+    networks:
+      subnet_a:
+        ipv4_address: 172.20.10.30
+    depends_on: [firewall]
+
+  # ── Subnet B: Windows-like + database ──
+  host_b1:
+    image: httpd:2.4-alpine
+    container_name: nip-b1
+    networks:
+      subnet_b:
+        ipv4_address: 172.20.20.10
+    depends_on: [firewall]
+
+  host_b2:
+    image: redis:7-alpine
+    container_name: nip-b2
+    networks:
+      subnet_b:
+        ipv4_address: 172.20.20.20
+    depends_on: [firewall]
+
+  host_b3:
+    image: alpine:3.19
+    container_name: nip-b3
+    command: sh -c "apk add --no-cache busybox-extras && sleep infinity"
+    networks:
+      subnet_b:
+        ipv4_address: 172.20.20.30
+    depends_on: [firewall]
+
+  # ── Subnet C: IoT-like ──
+  host_c1:
+    image: eclipse-mosquitto:2
+    container_name: nip-c1
+    networks:
+      subnet_c:
+        ipv4_address: 172.20.30.10
+    depends_on: [firewall]
+
+  host_c2:
+    image: alpine:3.19
+    container_name: nip-c2
+    command: sh -c "apk add --no-cache socat && socat TCP-LISTEN:23,reuseaddr,fork EXEC:'/bin/cat' & sleep infinity"
+    networks:
+      subnet_c:
+        ipv4_address: 172.20.30.20
+    depends_on: [firewall]
+
+  host_c3:
+    image: alpine:3.19
+    container_name: nip-c3
+    command: sh -c "apk add --no-cache nmap-ncat && ncat -lk 5000 -e /bin/echo & sleep infinity"
+    networks:
+      subnet_c:
+        ipv4_address: 172.20.30.30
+    depends_on: [firewall]
+
+volumes:
+  suricata_logs:

@@ -1,0 +1,16 @@
+# NetVis Backend Dependencies
+
+# Web framework
+flask>=2.3.0
+flask-cors>=4.0.0
+flask-socketio>=5.3.0
+
+# Async support
+eventlet>=0.33.0
+
+# Network scanning
+scapy>=2.5.0
+python-nmap>=0.7.1
+
+# Utilities
+netifaces>=0.11.0

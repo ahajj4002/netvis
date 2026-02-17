@@ -1,0 +1,62 @@
+# NetVis - Suricata rules for scan technique detection
+# Tune $HOME_NET in suricata.yaml to your lab subnet.
+
+alert tcp any any -> $HOME_NET any (
+  msg:"NetVis Recon: TCP SYN scan (threshold)";
+  flags:S;
+  flow:stateless;
+  threshold:type both, track by_src, count 20, seconds 10;
+  classtype:attempted-recon;
+  sid:6400001; rev:1;
+)
+
+alert tcp any any -> $HOME_NET any (
+  msg:"NetVis Recon: TCP FIN scan";
+  flags:F;
+  flow:stateless;
+  threshold:type both, track by_src, count 20, seconds 10;
+  classtype:attempted-recon;
+  sid:6400002; rev:1;
+)
+
+alert tcp any any -> $HOME_NET any (
+  msg:"NetVis Recon: TCP XMAS scan";
+  flags:FPU;
+  flow:stateless;
+  threshold:type both, track by_src, count 10, seconds 10;
+  classtype:attempted-recon;
+  sid:6400003; rev:1;
+)
+
+alert tcp any any -> $HOME_NET any (
+  msg:"NetVis Recon: TCP NULL scan";
+  flags:0;
+  flow:stateless;
+  threshold:type both, track by_src, count 10, seconds 10;
+  classtype:attempted-recon;
+  sid:6400004; rev:1;
+)
+
+alert tcp any any -> $HOME_NET any (
+  msg:"NetVis Recon: TCP ACK scan";
+  flags:A;
+  flow:stateless;
+  threshold:type both, track by_src, count 20, seconds 10;
+  classtype:attempted-recon;
+  sid:6400005; rev:1;
+)
+
+alert udp any any -> $HOME_NET any (
+  msg:"NetVis Recon: UDP scan (multiport threshold)";
+  threshold:type both, track by_src, count 30, seconds 10;
+  classtype:attempted-recon;
+  sid:6400006; rev:1;
+)
+
+alert ip any any -> $HOME_NET any (
+  msg:"NetVis Recon: IP Fragments observed";
+  fragbits:M;
+  threshold:type both, track by_src, count 10, seconds 10;
+  classtype:attempted-recon;
+  sid:6400007; rev:1;
+)

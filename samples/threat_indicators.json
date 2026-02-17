@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-02-16T05:03:48.001530+00:00",
+  "ips": [],
+  "domains": [],
+  "sources": [
+    {
+      "path": "samples/threat_indicators.json",
+      "ips": 0,
+      "domains": 0
+    }
+  ]
+}

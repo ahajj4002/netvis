@@ -1,0 +1,47 @@
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.claude/
+.vscode/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+venv/
+.venv/
+
+# Node artifacts
+node_modules/
+dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Local runtime/state
+data/netvis.db
+data/netvis.db-shm
+data/netvis.db-wal
+logs/
+
+# Generated reports/artifacts
+report/capture.pcap
+report/detection_matrix.json
+report/detection_matrix.md
+report/multichain_story.json
+report/multichain_story.md
+report/multichain_casefile.json
+report/suricata/
+report/zeek/
+
+# Env/secrets
+.env
+.env.*
+!.env.example

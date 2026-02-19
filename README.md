@@ -20,11 +20,11 @@ NetVis is an end-to-end security engineering platform that combines active recon
 - Background jobs provide progress tracking, status, and result retention through API.
 - NIP substrate supports technique registry, event bus, baselines, and quality scoring.
 
-## Agentic AI Framework (Coming Soon)
+## Product Roadmap
 
 NetVis is evolving toward a full agentic workflow for network intelligence.
 
-Planned direction:
+Roadmap direction:
 - Goal-driven planner that selects techniques by confidence, cost, and risk.
 - Tool-using agents for discovery, fingerprinting, detection, and triage.
 - Memory-aware reasoning over prior observations, not single-run snapshots.
@@ -34,7 +34,7 @@ Planned direction:
 
 ```mermaid
 flowchart LR
-    UI["React Frontend<br/>Graph | Dashboard | Workbench | Coursework"]
+    UI["React Frontend<br/>Graph | Dashboard | Workbench | Toolkit"]
     API["Flask API + WebSocket"]
     Recon["Recon + Capture Engine<br/>Scapy | nmap | module runners"]
     Store["Intelligence Store<br/>SQLite assets/flows/dns/alerts/jobs"]
@@ -55,7 +55,7 @@ server.py               # API surface and core orchestration logic
 store.py                # SQLite persistence layer
 services/               # Job managers, scan service, metrics daemon
 src/                    # React frontend (components, panels, views)
-mod1..mod7/             # Rubric-aligned reconnaissance modules
+mod1..mod7/             # Reconnaissance technique modules
 nip/                    # Registry, event bus, schema, brain/quality helpers
 docs/                   # Runbook and roadmap status docs
 ```
@@ -147,7 +147,7 @@ GitHub Actions CI runs these checks on push and pull request via `.github/workfl
 
 - Runbook: `docs/RUNBOOK.md`
 - NIP roadmap status: `docs/NIP_ROADMAP_STATUS.md`
-- Rubric map: `RECON_RUBRIC_MAP.md`
+- Technique map: `RECON_RUBRIC_MAP.md`
 
 ## Contributing
 
